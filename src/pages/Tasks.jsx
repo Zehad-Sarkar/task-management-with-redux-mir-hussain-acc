@@ -1,8 +1,11 @@
-import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import MyTasks from '../components/tasks/MyTasks';
-import TaskCard from '../components/tasks/TaskCard';
+import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import MyTasks from "../components/tasks/MyTasks";
+import TaskCard from "../components/tasks/TaskCard";
+import Modal from "../components/ui/Modal/Modal";
+import { useState } from "react";
 
 const Tasks = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="grid h-screen grid-cols-12">
       <div className="col-span-9 px-10 pt-10">
@@ -17,7 +20,15 @@ const Tasks = () => {
             <button className="grid w-10 h-10 transition-all border-2 border-secondary/20 hover:border-primary hover:bg-primary rounded-xl place-content-center text-secondary hover:text-white">
               <BellIcon className="w-6 h-6" />
             </button>
-            <button className="btn btn-primary">Add Task</button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="btn btn-primary"
+            >
+              Add Task
+            </button>
+            {/* headless modal */}
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+            {/* headless modal */}
             <div className="w-10 h-10 overflow-hidden rounded-xl">
               <img
                 src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=644&q=80"
