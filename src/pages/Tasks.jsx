@@ -1,11 +1,17 @@
 import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import MyTasks from "../components/tasks/MyTasks";
 import TaskCard from "../components/tasks/TaskCard";
-import Modal from "../components/ui/Modal/Modal";
 import { useState } from "react";
+import AddTaskModal from "../components/tasks/AddTaskModal";
+import { useSelector } from "react-redux";
 
 const Tasks = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { tasks } = useSelector((state) => state.tasks);
+  const pendingTasks = tasks.filter((task) => task.status === "pending");
+  const runningTasks = tasks.filter((task) => task.status === "running");
+  const doneTasks = tasks.filter((task) => task.status === "done");
+
   return (
     <div className="grid h-screen grid-cols-12">
       <div className="col-span-9 px-10 pt-10">
@@ -26,9 +32,9 @@ const Tasks = () => {
             >
               Add Task
             </button>
-            {/* headless modal */}
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
-            {/* headless modal */}
+            {/* headless modal impliment start */}
+            <AddTaskModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            {/* headless modal impliment close*/}
             <div className="w-10 h-10 overflow-hidden rounded-xl">
               <img
                 src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=644&q=80"
@@ -47,7 +53,9 @@ const Tasks = () => {
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
+              {pendingTasks.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
             </div>
           </div>
           <div className="relative h-[800px] overflow-auto">
@@ -58,19 +66,22 @@ const Tasks = () => {
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
-              <TaskCard />
+              {runningTasks.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
             </div>
           </div>
           <div className="relative h-[800px] overflow-auto">
             <div className="flex sticky top-0 justify-between bg-[#D3DDF9] p-5 rounded-md mb-3">
-              <h1>Up Next</h1>
+              <h1>Done</h1>
               <p className="grid w-6 h-6 text-white rounded-md bg-primary place-content-center">
                 0
               </p>
             </div>
             <div className="space-y-3">
-              <TaskCard />
+              {doneTasks.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
             </div>
           </div>
         </div>
